@@ -1,0 +1,15 @@
+{
+  "name": "gproject",
+  "version": "1.0.0",
+  "scripts": {
+    "frontend": "cd memory-card-game && npm run dev",
+    "backend": "cd memory-game-backend && node server.js",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.13.2"
+  }
+}

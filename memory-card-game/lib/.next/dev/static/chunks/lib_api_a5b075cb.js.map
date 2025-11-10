@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/SARIKA/Gproject/memory-card-game/lib/api.js"],"sourcesContent":["import axios from \"axios\";\r\n\r\n// Update this later when backend is deployed\r\nconst API_BASE = \"http://localhost:5000\";\r\n\r\nexport const submitScore = async (name, moves, time) => {\r\n  return await axios.post(`${API_BASE}/scores`, {\r\n    name,\r\n    moves,\r\n    time,\r\n  });\r\n};\r\n\r\nexport const getLeaderboard = async () => {\r\n  const res = await axios.get(`${API_BASE}/scores/top`);\r\n  return res.data;\r\n};\r\n"],"names":[],"mappings":";;;;;;AAAA;;AAEA,6CAA6C;AAC7C,MAAM,WAAW;AAEV,MAAM,cAAc,OAAO,MAAM,OAAO;IAC7C,OAAO,MAAM,4IAAK,CAAC,IAAI,CAAC,GAAG,SAAS,OAAO,CAAC,EAAE;QAC5C;QACA;QACA;IACF;AACF;AAEO,MAAM,iBAAiB;IAC5B,MAAM,MAAM,MAAM,4IAAK,CAAC,GAAG,CAAC,GAAG,SAAS,WAAW,CAAC;IACpD,OAAO,IAAI,IAAI;AACjB","debugId":null}}]
+}
