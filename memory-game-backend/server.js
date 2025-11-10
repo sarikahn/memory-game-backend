@@ -1,40 +1,52 @@
+// server.js
+
 import express from "express";
 import cors from "cors";
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(cors({ origin: "*" }));
 
-// ✅ Root route for Render health check
-app.get("/", (req, res) => {
-  res.send("🎯 Memory Game Backend is running successfully!");
-});
-
-// ✅ Dummy leaderboard data
-let scores = [
+// Dummy game scores (you can replace this with MongoDB or file storage later)
+const scores = [
   { id: 1, name: "Alice", moves: 12 },
   { id: 2, name: "Bob", moves: 15 },
   { id: 3, name: "Charlie", moves: 10 },
 ];
 
-// ✅ POST new score
+// ✅ Root route — Render will check this for health
+app.get("/", (req, res) => {
+  res.send("🎯 Memory Game Backend is running successfully!");
+});
+
+// ✅ Get all scores
+app.get("/scores", (req, res) => {
+  res.json(scores);
+});
+
+// ✅ Post a new score
 app.post("/scores", (req, res) => {
   const { name, moves } = req.body;
-  if (!name || moves === undefined) {
-    return res.status(400).json({ message: "Missing name or moves" });
+
+  if (!name || !moves) {
+    return res.status(400).json({ message: "Name and moves are required" });
   }
-  const newScore = { id: scores.length + 1, name, moves };
+
+  const newScore = {
+    id: scores.length + 1,
+    name,
+    moves,
+  };
+
   scores.push(newScore);
-  res.json({ message: "Score saved!", data: newScore });
+  res.status(201).json(newScore);
 });
 
-// ✅ GET all scores
-app.get("/scores", (req, res) => {
-  const sortedScores = scores.sort((a, b) => a.moves - b.moves);
-  res.json(sortedScores);
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
 });
-
-// ✅ Start server on Render
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
