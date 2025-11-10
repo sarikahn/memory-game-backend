@@ -1,39 +1,41 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
 
-// ✅ Dummy in-memory storage (Replace with MongoDB when ready)
-let scores = [
-  { name: "Player1", moves: 10 },
-  { name: "Player2", moves: 15 }
-];
+const PORT = process.env.PORT || 10000;
 
-// ✅ Save a score (POST)
-app.post("/scores", (req, res) => {
-  const { name, moves } = req.body;
-
-  if (!name || moves === undefined) {
-    return res.status(400).json({ message: "Missing fields" });
-  }
-
-  scores.push({ name, moves });
-  res.json({ message: "Score saved!" });
-});
-
-// ✅ Retrieve leaderboard (GET)
-app.get("/scores", (req, res) => {
-  const sortedScores = scores.sort((a, b) => a.moves - b.moves);
-  res.json(sortedScores);
-});
-
-// ✅ Root route for testing
+// ✅ Root route to confirm deployment
 app.get("/", (req, res) => {
   res.send("✅ Memory Game Backend is running successfully!");
 });
 
-// ✅ Start server
-app.listen(5000, () => console.log("🚀 Backend running on http://localhost:5000"));
+// ✅ Temporary in-memory leaderboard (for demo)
+let scores = [
+  { name: "Player1", moves: 10 },
+  { name: "Player2", moves: 15 },
+];
 
+// ✅ GET route
+app.get("/scores", (req, res) => {
+  res.json(scores);
+});
+
+// ✅ POST route
+app.post("/scores", (req, res) => {
+  const { name, moves } = req.body;
+  if (!name || !moves) {
+    return res.status(400).json({ error: "Name and moves are required" });
+  }
+  scores.push({ name, moves });
+  res.json({ message: "Score saved!", scores });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
