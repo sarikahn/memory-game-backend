@@ -5,16 +5,16 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-// ✅ Root route
+// ✅ Root route for Render health check
 app.get("/", (req, res) => {
   res.send("🎯 Memory Game Backend is running successfully!");
 });
 
-// ✅ Dummy leaderboard
+// ✅ Dummy leaderboard data
 let scores = [
   { id: 1, name: "Alice", moves: 12 },
   { id: 2, name: "Bob", moves: 15 },
-  { id: 3, name: "Charlie", moves: 10 }
+  { id: 3, name: "Charlie", moves: 10 },
 ];
 
 // ✅ POST new score
@@ -34,5 +34,7 @@ app.get("/scores", (req, res) => {
   res.json(sortedScores);
 });
 
-// ✅ Start server
-app.listen(10000, () => console.log("Server running on port 10000"));
+// ✅ Start server on Render
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
