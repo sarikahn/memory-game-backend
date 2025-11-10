@@ -1,38 +1,16 @@
 {
-<<<<<<< HEAD
-  "name": "gproject",
-  "version": "1.0.0",
-  "scripts": {
-    "frontend": "cd memory-card-game && npm run dev",
-    "backend": "cd memory-game-backend && node server.js",
-    "start": "concurrently \"npm run backend\" \"npm run frontend\""
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  },
-  "dependencies": {
-    "axios": "^1.13.2"
-=======
   "name": "memory-game-backend",
   "version": "1.0.0",
-  "description": "Backend for Memory Card Game",
-  "main": "server.js",
+  "description": "Memory Game Backend",
   "type": "module",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^4.21.2",
-    "mongoose": "^7.8.7"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
->>>>>>> b63266ab62f56ee5c157e2bd046dc280c549e95d
+    "fs-extra": "^11.1.1"
   }
 }
+
