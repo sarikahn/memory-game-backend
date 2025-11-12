@@ -4,36 +4,43 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// In-memory scores array
 let scores = [];
 
-// POST a new score
+// ✅ POST route to save a player's score
 app.post("/scores", (req, res) => {
-  const { name, moves, time, difficulty } = req.body;
-  if (!name || moves === undefined || !time || !difficulty) {
-    return res.status(400).json({ message: "Missing required fields" });
+  const { name, moves } = req.body;
+
+  if (!name || moves === undefined) {
+    return res.status(400).json({ message: "Name and moves are required" });
   }
-  scores.push({ name, moves, time, difficulty, date: new Date() });
-  res.json({ message: "Score saved!", data: scores });
+
+  const newScore = {
+    id: scores.length + 1,
+    name,
+    moves,
+    date: new Date()
+  };
+
+  scores.push(newScore);
+  res.status(201).json({ message: "Score saved successfully", newScore });
 });
 
-// GET all scores
+// ✅ GET route to get all scores
 app.get("/scores", (req, res) => {
-  res.json(scores);
+  res.json(scores.sort((a, b) => a.moves - b.moves));
 });
 
-// Default route
+// ✅ Root route
 app.get("/", (req, res) => {
-  res.send("✅ Memory Game Backend is running successfully!");
+  res.send("🎮 Memory Game Backend is running!");
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
+
 
 
 
