@@ -1,102 +1,59 @@
 import express from "express";
-import cors from "cors";
-<<<<<<< HEAD
 import mongoose from "mongoose";
-=======
+import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
->>>>>>> c59fd1ebac946c37ca1f40747c9d77764b3a14a2
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-<<<<<<< HEAD
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-// ---------------------
-// 1. MONGODB CONNECTION
-// ---------------------
+// ---------------- MongoDB ----------------
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB error:", err));
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.error("MongoDB Error:", err));
 
-// ---------------------
-// 2. SCORE MODEL
-// ---------------------
+// ---------------- Schema ----------------
 const scoreSchema = new mongoose.Schema({
   name: String,
   moves: Number,
   time: Number,
   difficulty: String,
-  category: String,
-  createdAt: { type: Date, default: Date.now }
+  category: String
 });
 
 const Score = mongoose.model("Score", scoreSchema);
 
-// ---------------------
-// 3. GET SCORES API
-// ---------------------
-app.get("/scores", async (req, res) => {
-  const scores = await Score.find().sort({ moves: 1 }); // Best score first
-  res.json(scores);
-});
+// ---------------- Routes ----------------
 
-// ---------------------
-// 4. POST SCORE API
-// ---------------------
+// POST → Save score
 app.post("/scores", async (req, res) => {
   try {
     const score = new Score(req.body);
     await score.save();
-
-    res.json({ success: true, message: "Score saved to MongoDB!" });
+    res.json({ message: "Score saved!", score });
   } catch (err) {
-    console.error("Save error:", err);
-    res.status(500).json({ success: false, message: "Error saving score" });
+    res.status(500).json({ error: "Error saving score" });
   }
 });
 
-// ---------------------
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// GET → Fetch scores
+app.get("/scores", async (req, res) => {
+  try {
+    const scores = await Score.find().sort({ moves: 1, time: 1 });
+    res.json(scores);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching scores" });
+  }
 });
 
-
-=======
-// Enable CORS so frontend can call this backend
-app.use(cors({
-  origin: "http://localhost:3000" || "*"  // allow frontend URL
-}));
-
-// Example memory API
-app.get("/api/memory", (req, res) => {
-  const memoryData = [
-    { id: 1, name: "Card 1", matched: false },
-    { id: 2, name: "Card 2", matched: false },
-    { id: 3, name: "Card 3", matched: false },
-    { id: 4, name: "Card 4", matched: false },
-  ];
-  res.json(memoryData);
-});
-
-// ✅ Add /scores route
-app.get("/scores", (req, res) => {
-  const scores = [
-    { id: 1, name: "Alice", moves: 12 },
-    { id: 2, name: "Bob", moves: 15 },
-    { id: 3, name: "Charlie", moves: 10 },
-  ];
-  res.json(scores);
-});
+// ---------------- Port ----------------
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Backend running on port ${PORT}`);
 });
-
->>>>>>> c59fd1ebac946c37ca1f40747c9d77764b3a14a2
