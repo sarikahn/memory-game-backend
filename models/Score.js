@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import express from "express";
 import Score from "../models/Score.js"; // your Mongoose model
 
@@ -37,3 +38,22 @@ router.get("/scores", async (req, res) => {
 });
 
 export default router;
+=======
+// backend/models/Score.js
+import mongoose from "mongoose";
+
+const ScoreSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    moves: { type: Number, required: true },
+    time: { type: Number, required: true },
+    difficulty: { type: String, required: true },
+    category: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.Score || mongoose.model("Score", ScoreSchema);
+
+
+>>>>>>> c59fd1ebac946c37ca1f40747c9d77764b3a14a2

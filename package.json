@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "memory-game-backend",
   "version": "1.0.0",
   "type": "module",
@@ -13,3 +14,18 @@
     "mongoose": "^7.8.7"
   }
 }
+=======
+  "name": "memory-game",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd memory-game-backend && npm run dev",
+    "client": "cd memory-card-game && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
+>>>>>>> c59fd1ebac946c37ca1f40747c9d77764b3a14a2
