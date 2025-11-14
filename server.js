@@ -13,7 +13,10 @@ app.use(cors());
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("MongoDB Error:", err));
 
@@ -35,7 +38,10 @@ app.post("/scores", async (req, res) => {
   try {
     const score = new Score(req.body);
     await score.save();
-    res.json({ message: "Score saved!", score });
+    res.json({
+      message: "Score saved!",
+      score: score
+    });
   } catch (err) {
     res.status(500).json({ error: "Error saving score" });
   }
@@ -44,11 +50,16 @@ app.post("/scores", async (req, res) => {
 // GET → Fetch scores
 app.get("/scores", async (req, res) => {
   try {
-    const scores = await Score.find().sort({ moves: 1, time: 1 });
+    const scores = await Score.find().sort({ moves: 1 });
     res.json(scores);
   } catch (err) {
     res.status(500).json({ error: "Error fetching scores" });
   }
+});
+
+// ---------------- Root Route ----------------
+app.get("/", (req, res) => {
+  res.send("Memory Game Backend is running 🚀");
 });
 
 // ---------------- Port ----------------
@@ -57,3 +68,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
 });
+
